@@ -27,46 +27,55 @@ provide('drawer', {
 </script>
 
 <template>
-    <n-layout position="absolute">
-        <n-layout-header
-            style="height: 70px; padding: 10px;"
-            bordered
-        >
-            <TopBar title="内务主页" :has-drawer="true"/>
-        </n-layout-header>
-        <n-layout
-            position="absolute"
-            style="padding: 20px; top: 70px;"
-            has-sider
-        >
-            <n-scrollbar>
-                <n-flex
-                    style="padding: 10px;"
-                    :size=30
-                >
-                    <WorkCard />
-                    <WorkCard />
-                    <WorkCard />
-                    <WorkCard />
-                    <WorkCard />
-                </n-flex>
-            </n-scrollbar>
+    <div class="wrapper">
+        <n-layout position="absolute">
+            <n-layout-header
+                style="height: 70px; padding: 10px;"
+                bordered
+            >
+                <TopBar title="内务主页" :has-drawer="true"/>
+            </n-layout-header>
+            <n-layout
+                position="absolute"
+                style="padding: 20px; top: 70px;"
+                has-sider
+            >
+                <n-scrollbar>
+                    <n-flex
+                        style="padding: 10px;"
+                        :size=30
+                    >
+                        <WorkCard />
+                        <WorkCard />
+                        <WorkCard />
+                        <WorkCard />
+                        <WorkCard />
+                    </n-flex>
+                </n-scrollbar>
+            </n-layout>
         </n-layout>
-    </n-layout>
-    <n-drawer 
-        v-model:show="active"
-        :width="screenWidth"
-        placement="left"
-        :trap-focus="false"
-    >
-        <n-drawer-content 
-            title="Diluc, 您好"
-            closable
+        <n-drawer 
+            v-model:show="active"
+            :width="screenWidth"
+            placement="left"
+            :trap-focus="false"
         >
-            <DrawerContent />
-        </n-drawer-content>
-    </n-drawer>
+            <n-drawer-content 
+                title="Diluc, 您好"
+                closable
+            >
+                <DrawerContent />
+            </n-drawer-content>
+        </n-drawer>
+    </div>
 </template>
 
 <style scoped>
+.wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
 </style>

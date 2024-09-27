@@ -7,14 +7,20 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
     },
     {
       path: '/userdata',
       name: 'userdata',
-      component: () => import('../views/UserDataView.vue')
+      component: () => import('../views/UserDataView.vue'),
     }
   ]
+})
+
+router.afterEach((to, from) => {
+  const toDepth = to.path === '/' ? 0 : to.path.split('/').length;
+  const fromDepth = from.path === '/' ? 0 : from.path.split('/').length;
+  to.meta.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left';
 })
 
 export default router
