@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { darkTheme, NConfigProvider } from 'naive-ui';
 import { ref, provide } from 'vue';
-import type { Theme } from './types/components/App';
+import type { Theme } from './types/App';
 import type { Ref } from 'vue';
 import type { GlobalTheme } from 'naive-ui';
 // 设置主题

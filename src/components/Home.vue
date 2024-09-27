@@ -1,7 +1,29 @@
 <script setup lang="ts">
-import { NFlex, NLayout, NLayoutHeader, NScrollbar } from 'naive-ui';
-import Header from './utils/Header.vue';
+import { NFlex, NLayout, NLayoutHeader, NScrollbar, NDrawer, NDrawerContent } from 'naive-ui';
+import { ref, provide } from 'vue';
+import TopBar from './utils/TopBar.vue';
 import WorkCard from './utils/WorkCard.vue';
+import type { Ref } from 'vue';
+import type { Drawer } from '@/types/components/Home';
+import DrawerContent from './utils/DrawerContent.vue';
+
+// 获取屏幕宽度
+const screenWidth: Ref<number> = ref(window.innerWidth * 0.618);
+
+// 侧边抽屉
+const active: Ref<boolean> = ref(false);
+/*
+    激活侧边抽屉
+*/
+const activateDrawer = () => {
+    // 重新计算屏幕宽度
+    screenWidth.value = window.innerWidth * 0.618;
+    active.value = true;
+};
+provide('drawer', {
+    active,
+    activateDrawer
+} as Drawer);
 </script>
 
 <template>
@@ -10,7 +32,7 @@ import WorkCard from './utils/WorkCard.vue';
             style="height: 70px; padding: 10px;"
             bordered
         >
-            <Header title="内务主页"/>
+            <TopBar title="内务主页" :has-drawer="true"/>
         </n-layout-header>
         <n-layout
             position="absolute"
@@ -31,6 +53,19 @@ import WorkCard from './utils/WorkCard.vue';
             </n-scrollbar>
         </n-layout>
     </n-layout>
+    <n-drawer 
+        v-model:show="active"
+        :width="screenWidth"
+        placement="left"
+        :trap-focus="false"
+    >
+        <n-drawer-content 
+            title="Diluc, 您好"
+            closable
+        >
+            <DrawerContent />
+        </n-drawer-content>
+    </n-drawer>
 </template>
 
 <style scoped>
