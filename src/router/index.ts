@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
@@ -13,14 +13,25 @@ const router = createRouter({
       path: '/userdata',
       name: 'userdata',
       component: () => import('../views/UserDataView.vue'),
-    }
+    },
   ]
 })
 
 router.afterEach((to, from) => {
-  const toDepth = to.path === '/' ? 0 : to.path.split('/').length;
-  const fromDepth = from.path === '/' ? 0 : from.path.split('/').length;
-  to.meta.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+  /*
+    目的：实现动效仅在navigation作用
+    功能：检测from的路由记录，若有则是navigation，若无则是reload
+  */
+  if (from.matched[0]) {
+    const toDepth = to.path === '/' ? 0 : to.path.split('/').length;
+    const fromDepth = from.path === '/' ? 0 : from.path.split('/').length;
+    if (toDepth < fromDepth) {
+      to.meta.transition = 'slide-right';
+    }
+    else if (toDepth > fromDepth) {
+      to.meta.transition = 'slide-left';
+    }
+  }
 })
 
 export default router

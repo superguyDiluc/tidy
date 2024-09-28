@@ -25,9 +25,9 @@ const serviceOptions: Array<ServiceOption> = [
         /*
             关闭抽屉并跳转路由
         */
-        event: (): void => {
+        event: async (): Promise<void> => {
+            await router.push('/userdata');
             active.value = false;
-            router.push('/userdata');
         }
     },
 ];
