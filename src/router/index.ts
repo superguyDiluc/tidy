@@ -8,14 +8,37 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/userdata',
       name: 'userdata',
       component: () => import('../views/UserDataView.vue'),
+      meta: {
+        requiresAuth: true
+      }
     },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/LoginView.vue'),
+      meta: {
+        requiresAuth: false
+      }
+    }
   ]
 })
+
+// router.beforeEach((to, from) => {
+//   if (to.meta.requiresAuth) {
+//     return {
+//       path: '/login',
+//       query: { redirect: to.fullPath },
+//     }
+//   }
+// })
 
 router.afterEach((to, from) => {
   /*
