@@ -41,6 +41,52 @@ provide('theme', {
 </template>
 
 <style scoped>
+/*向上滑动*/
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.5s cubic-bezier(0.2536, 1, 0.47, 1);
+}
+
+
+.slide-up-enter-from {
+  position: absolute;
+  transform: translateY(100%);
+}
+
+
+.slide-up-leave-to {
+  position: absolute;
+  transform: translateY(-100%);
+}
+
+/*向下滑动*/
+.slide-down-enter-active {
+  transition: 
+    opacity 0.3s cubic-bezier(0.58, 0.09, 0.30, 0.98);
+  transition-delay: 0.25s;
+}
+
+.slide-down-leave-active {
+  opacity: 0.9;
+  transition: 
+    transform 0.5s cubic-bezier(0.44, 0.12, 0.21, 0.94),
+    opacity 0.5s cubic-bezier(0.18, 1.17, 0.18, 0.93);
+  transition-delay: 0s, 0s;
+}
+
+
+.slide-down-enter-from {
+  position: absolute;
+  opacity: 0;
+}
+
+
+.slide-down-leave-to {
+  position: absolute;
+  opacity: 0;
+  transform: translateY(100%);
+}
+
 /*向左滑动*/
 .slide-left-enter-active,
 .slide-left-leave-active {

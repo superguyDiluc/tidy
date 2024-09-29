@@ -49,10 +49,10 @@ router.afterEach((to, from) => {
     const toDepth = to.path === '/' ? 0 : to.path.split('/').length;
     const fromDepth = from.path === '/' ? 0 : from.path.split('/').length;
     if (toDepth < fromDepth) {
-      to.meta.transition = 'slide-right';
+      to.meta.transition = from.path === '/login' ? 'slide-down' : 'slide-right';
     }
     else if (toDepth > fromDepth) {
-      to.meta.transition = 'slide-left';
+      to.meta.transition = to.path === '/login' ? 'slide-up' : 'slide-left';
     }
   }
 })

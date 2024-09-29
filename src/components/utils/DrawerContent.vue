@@ -31,6 +31,14 @@ const serviceOptions: Array<ServiceOption> = [
         }
     },
 ];
+
+/*
+    退出登录
+*/
+const logout = async () => {
+    await router.push('/login');
+    active.value = false;
+};
 </script>
 
 <template>
@@ -50,7 +58,7 @@ const serviceOptions: Array<ServiceOption> = [
             </template>
         </n-flex>
         <n-flex justify="center" align="center" style="position: fixed; bottom: 16px;">
-            <NIcon :size="35">
+            <NIcon :size="35" @click="logout">
                 <IconLogout />
             </NIcon>
         </n-flex>
