@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NFlex, NSwitch, NIcon, darkTheme } from 'naive-ui';
+import { NFlex, NSwitch, NIcon } from 'naive-ui';
 import { inject, ref } from 'vue';
 import { useRouter, type Router } from 'vue-router';
 import IconUserAvatarLight from '../icons/IconUserAvatarLight.vue';
@@ -45,7 +45,12 @@ const backHome = () => {
         justify="space-between" 
         align="center"
     >
-        <n-icon v-if="props.hasDrawer" :size="30" @click="activateDrawer">
+        <n-icon 
+            v-if="props.hasDrawer" 
+            :size="30" 
+            class="icon"
+            @click="activateDrawer"
+            >
             <IconUserAvatarLight />
         </n-icon>
         <n-icon v-else :size="30" @click="backHome">
@@ -61,4 +66,7 @@ const backHome = () => {
 </template>
 
 <style scoped>
+.slide-down-enter-from .icon {
+    opacity: 1;
+}
 </style>
