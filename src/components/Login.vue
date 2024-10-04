@@ -10,6 +10,14 @@ import type { AvatarLoc } from '@/types/App';
 // 路由
 const router: Router = useRouter();
 
+// 导入头像接口
+const {
+    avatarX,
+    avatarY,
+    getAvatarLoc,
+    isActive
+} = inject('avatar') as AvatarLoc;
+
 /*
     登录
 */
@@ -25,23 +33,15 @@ const login = async () => {
     }
 };
 
-// 导入头像接口
-const {
-    avatarX,
-    avatarY,
-    getAvatarLoc,
-    isActive
-} = inject('avatar') as AvatarLoc;
-
 // 处理挂载
-onMounted(() => {
-    console.log(1);
-    getAvatarLoc();
-    window.addEventListener('resize', getAvatarLoc);
-})
-onUnmounted(() => {
-    window.removeEventListener('resize', getAvatarLoc);
-});
+// onMounted(() => {
+//     console.log(1);
+//     getAvatarLoc();
+//     window.addEventListener('resize', getAvatarLoc);
+// })
+// onUnmounted(() => {
+//     window.removeEventListener('resize', getAvatarLoc);
+// });
 </script>
 
 <template>

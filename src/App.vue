@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { darkTheme, NConfigProvider, NIcon } from 'naive-ui';
-import { ref, provide, computed, nextTick } from 'vue';
-import IconUserAvatarLight from './components/icons/IconUserAvatarLight.vue';
-import type { AvatarLoc, Theme } from './types/App';
+import { darkTheme, NConfigProvider } from 'naive-ui';
+import { ref, provide } from 'vue';
+import type { Theme } from './types/App';
 import type { Ref } from 'vue';
 import type { BuiltInGlobalTheme } from 'naive-ui/es/themes/interface';
+import CloneAvatar from './components/utils/CloneAvatar.vue';
 
 // 设置主题s
 const theme: Ref<BuiltInGlobalTheme | undefined> = ref(undefined);
@@ -23,58 +23,16 @@ const handleSetTheme = (value: boolean): void => {
     }
 };
 
-/*
-  确认头像位置
-  参数：void
-  返回值：void
-*/
-const isActive: Ref<boolean> = ref(false);
-const avatarX: Ref<number> = ref(0);
-const avatarY: Ref<number> = ref(0);
-const getAvatarLoc = (): void => {
-  const avatar: HTMLElement | null = document.getElementById('loginAvatar');
-  if (avatar) {
-    avatarX.value = avatar.getBoundingClientRect().left;
-    avatarY.value = avatar.getBoundingClientRect().top;
-    console.log(`left: ${avatarX.value}, top: ${avatarY.value}`);
-  }
-};
-
-// 计算克隆头像style对象
-const activeStyle = computed(() => {
-  return {
-    left: `${avatarX.value}px`,
-    top: `${avatarY.value}px`,
-    opacity: isActive.value ? 1 : 0,
-    transform: isActive.value ? `translate(${-avatarX.value - 35}px, ${-avatarY.value - 25}px) scale(0.25)` : '',
-    transition: 'all 0.4s ease'
-  };
-});
-
 // 向子组件传递主题接口
 provide('theme', {
   theme,
   handleSetTheme
 } as Theme);
-
-// 向子组件传递头像接口
-provide('avatar', {
-  avatarX,
-  avatarY,
-  getAvatarLoc,
-  isActive
-} as AvatarLoc);
 </script>
 
 <template>
   <!-- 克隆头像 -->
-  <n-icon 
-      :size="120"
-      class="avatar-style"
-      :style="[activeStyle]"
-  >
-      <IconUserAvatarLight />
-  </n-icon>
+  <CloneAvatar />
   <!-- 主路由 -->
   <n-config-provider 
     :theme="theme">

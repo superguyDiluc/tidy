@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { inject } from 'vue';
+import type { AvatarLoc } from '@/types/App';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -26,6 +28,23 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue'),
       meta: {
         requiresAuth: false
+      },
+      // 时刻监听克隆头像变化
+      beforeEnter: (to, from, next) => {
+        const {
+          avatarX,
+          avatarY,
+          getAvatarLoc,
+          isActive,
+          isLogining
+        } = inject('avatar') as AvatarLoc;
+        isLogining.value = true;
+        const intervalId = setInterval(() => {
+          getAvatarLoc();
+        }, 500);
+
+        to.meta.intervalId = intervalId;
+        next();
       }
     },
     {
@@ -47,6 +66,22 @@ const router = createRouter({
 //     }
 //   }
 // })
+
+router.beforeEach((to, from, next) => {
+  // 在全局路由守卫中处理路由离开时停止循环
+  if (from.meta.intervalId) {
+    const {
+      avatarX,
+      avatarY,
+      getAvatarLoc,
+      isActive,
+      isLogining
+    } = inject('avatar') as AvatarLoc;
+    setTimeout(() => isLogining.value = false, 800);
+    clearInterval(from.meta.intervalId as number);
+  }
+  next();
+});
 
 router.afterEach((to, from) => {
   /*

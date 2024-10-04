@@ -11,4 +11,5 @@ export interface AvatarLoc {
     avatarY: Ref<number>;
     getAvatarLoc: () => void;
     isActive: Ref<boolean>;
+    isLogining: Ref<boolean>;
 }
