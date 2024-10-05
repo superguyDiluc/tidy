@@ -5,7 +5,7 @@ import { inject } from 'vue';
 import IconUserAvatarLight from '../icons/IconUserAvatarLight.vue';
 import IconLogout from '../icons/IconLogout.vue';
 import CommonCard from './CommonCard.vue';
-import type { Drawer } from '@/types/components/Home';
+import type { Drawer, LoginDrawer } from '@/types/components/Home';
 import type { ServiceOption } from '@/types/components/utils/DrawerContent';
 
 // 路由
@@ -13,6 +13,9 @@ const router: Router = useRouter();
 
 // 导入抽屉控制
 const { active, activateDrawer} = (inject('drawer') as Drawer);
+
+// 导入下边抽屉控制
+const { activeBottomDrawer, activateBottomDrawer } = (inject('loginDrawer') as LoginDrawer);
 
 // 可渲染服务
 const serviceOptions: Array<ServiceOption> = [
@@ -50,7 +53,7 @@ const serviceOptions: Array<ServiceOption> = [
             </template>
         </n-flex>
         <n-flex justify="center" align="center" style="position: fixed; bottom: 16px;">
-            <NIcon :size="35">
+            <NIcon :size="35" @click="activateBottomDrawer">
                 <IconLogout />
             </NIcon>
         </n-flex>

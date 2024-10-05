@@ -4,11 +4,13 @@ import { ref, provide } from 'vue';
 import TopBar from './utils/TopBar.vue';
 import WorkCard from './utils/WorkCard.vue';
 import type { Ref } from 'vue';
-import type { Drawer } from '@/types/components/Home';
+import type { Drawer, LoginDrawer } from '@/types/components/Home';
 import DrawerContent from './utils/DrawerContent.vue';
+import DrawerLogin from './utils/DrawerLogin.vue';
 
-// 获取屏幕宽度
+// 获取屏幕数据
 const screenWidth: Ref<number> = ref(window.innerWidth * 0.618);
+const screenHeight: Ref<number> = ref(window.innerHeight * 0.96);
 
 // 侧边抽屉
 const active: Ref<boolean> = ref(false);
@@ -24,11 +26,30 @@ provide('drawer', {
     active,
     activateDrawer
 } as Drawer);
+
+// 下边抽屉
+const activeBottomDrawer: Ref<boolean> = ref(false);
+/*
+    激活下边抽屉
+*/
+const activateBottomDrawer = () => {
+    screenHeight.value = window.innerHeight * 0.96;
+    active.value = false;
+    activeBottomDrawer.value = true;
+}
+provide('loginDrawer', {
+    activeBottomDrawer,
+    activateBottomDrawer
+} as LoginDrawer);
 </script>
 
 <template>
     <div class="wrapper">
-        <n-layout position="absolute">
+        <n-layout 
+            position="absolute"
+            class="section"
+            :class="{ open: activeBottomDrawer }"
+        >
             <n-layout-header
                 style="height: 70px; padding: 10px;"
                 bordered
@@ -54,6 +75,7 @@ provide('drawer', {
                 </n-scrollbar>
             </n-layout>
         </n-layout>
+        <!-- 侧边抽屉 -->
         <n-drawer 
             v-model:show="active"
             :width="screenWidth"
@@ -67,6 +89,25 @@ provide('drawer', {
                 <DrawerContent />
             </n-drawer-content>
         </n-drawer>
+        <!-- 下边抽屉 -->
+        <n-drawer
+            v-model:show="activeBottomDrawer"
+            :height="screenHeight"
+            placement="bottom"
+            :trap-focus="false"
+            style="border-top-left-radius: 1.5em 2em; border-top-right-radius: 1.5em 2em;"
+        >
+            <n-drawer-content
+                header-style="border-bottom: 0;"
+            >
+                <template #header>
+                    <n-flex justify="center">
+                        <h2 style="margin: 0;">登录</h2>
+                    </n-flex>
+                </template>
+                <DrawerLogin />
+            </n-drawer-content>
+        </n-drawer>
     </div>
 </template>
 
@@ -77,5 +118,17 @@ provide('drawer', {
     left: 0;
     width: 100%;
     height: 100%;
+    /* 实验 */
+    background-color: black
+}
+
+.section {
+    transition: all 600ms cubic-bezier(0.2536, 1, 0.47, 1);
+}
+
+.open {
+    border-top-left-radius: 1.5em 2em; 
+    border-top-right-radius: 1.5em 2em;
+    transform: scale(0.95);
 }
 </style>

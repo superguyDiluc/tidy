@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { darkTheme, NConfigProvider } from 'naive-ui';
+import { darkTheme, NConfigProvider, NMessageProvider } from 'naive-ui';
 import { ref, provide } from 'vue';
 import type { Theme } from './types/App';
 import type { Ref } from 'vue';
@@ -19,6 +19,7 @@ const handleSetTheme = (value: boolean): void => {
       theme.value = undefined;
     }
 };
+
 // 向子组件传递接口
 provide('theme', {
   theme,
@@ -30,13 +31,15 @@ provide('theme', {
   <n-config-provider 
     :theme="theme"
   >
-    <router-view v-slot="{ Component, route }">
-      <transition :name="(route.meta.transition as string)">
-        <keep-alive>
-          <component :is="Component" :key="route.path"/>
-        </keep-alive>
-      </transition>
-    </router-view>
+    <n-message-provider>
+      <router-view v-slot="{ Component, route }">
+        <transition :name="(route.meta.transition as string)">
+          <keep-alive>
+            <component :is="Component" :key="route.path"/>
+          </keep-alive>
+        </transition>
+      </router-view>
+    </n-message-provider>
   </n-config-provider>
 </template>
 
