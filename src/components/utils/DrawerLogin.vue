@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { LoginDrawer } from '@/types/components/Home';
+import { deleteAccessToken, UpdateAccessToken, updateUserData } from '@/utils';
 import { NFlex, NForm, NFormItem, NInput, NButton, useMessage, NMessageProvider, type FormInst } from 'naive-ui';
 import { ref, inject } from 'vue';
 
@@ -35,14 +36,27 @@ const rules = {
 }
 const handleValidateClick = (e: MouseEvent): void => {
     e.preventDefault()
-    formRef.value?.validate((errors) => {
+    formRef.value?.validate(async (errors) => {
         if (!errors) {
-            message.success('Valid')
-            activeBottomDrawer.value = false;
+            let updateStatus = await UpdateAccessToken(modelRef.value.username as string, modelRef.value.password as string);
+            if (updateStatus) {
+                updateStatus = await updateUserData();
+                if (updateStatus) {
+                    message.success('Login Success');
+                    activeBottomDrawer.value = false;
+                }
+                else {
+                    message.error('Get UserData Fail');
+                    deleteAccessToken();
+                }
+            }
+            else {
+                message.error('Login Fail');
+            }
         }
         else {
             console.log(errors)
-            message.error('Invalid')
+            message.error('Please Fill in the Form');
         }
     })
 }

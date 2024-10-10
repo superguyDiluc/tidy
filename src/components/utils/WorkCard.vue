@@ -2,13 +2,24 @@
 import { NFlex, NCard, NButton } from 'naive-ui';
 import { h, type VNode } from 'vue';
 
+const props = defineProps({
+    workname: {
+        type: String,
+    },
+    cur_username: {
+        type: String,
+    },
+    next_username: {
+        type: String
+    }
+});
+
 const cardTitle: VNode = h(
     'div',
     [
-        h('h2', '洗厕所'),
-        h('h4', 'wmz'),
-        h(
-            'h5', { style: 'color: gray;' },'下一位是: yyj')
+        h('h2', props.workname),
+        h('h4', props.cur_username),
+        h('h5', { style: 'color: gray;' }, `下一位是: ${props.next_username}`)
     ]
 );
 </script>

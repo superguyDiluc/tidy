@@ -9,6 +9,10 @@ export default defineConfig({
     vue(),
   ],
   server: {
+    proxy: {
+      "/api": "http://localhost:1026",
+      "/user_photo": "http://localhost:1026"
+    },
     port: 3000 // 设置端口号
   },
   resolve: {

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { checkLogin } from '@/utils'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -9,7 +10,7 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
       meta: {
-        requiresAuth: true
+        requiresAuth: false
       }
     },
     {
@@ -20,25 +21,25 @@ const router = createRouter({
         requiresAuth: true
       }
     },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('../views/LoginView.vue'),
-      meta: {
-        requiresAuth: false
-      }
-    }
+    // {
+    //   path: '/login',
+    //   name: 'login',
+    //   component: () => import('../views/LoginView.vue'),
+    //   meta: {
+    //     requiresAuth: false
+    //   }
+    // }
   ]
 })
 
-// router.beforeEach((to, from) => {
-//   if (to.meta.requiresAuth) {
-//     return {
-//       path: '/login',
-//       query: { redirect: to.fullPath },
-//     }
-//   }
-// })
+router.beforeEach((to, from) => {
+  if (to.meta.requiresAuth && !checkLogin()) {
+    return {
+      path: '/',
+      query: { redirect: to.fullPath },
+    }
+  }
+})
 
 router.afterEach((to, from) => {
   /*

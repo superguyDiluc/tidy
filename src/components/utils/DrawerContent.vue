@@ -7,15 +7,19 @@ import IconLogout from '../icons/IconLogout.vue';
 import CommonCard from './CommonCard.vue';
 import type { Drawer, LoginDrawer } from '@/types/components/Home';
 import type { ServiceOption } from '@/types/components/utils/DrawerContent';
+import { deleteAccessToken } from '@/utils';
 
 // 路由
 const router: Router = useRouter();
 
+// 用户信息
+const userData = {
+    username: localStorage.getItem('user_name') || 'NULL',
+    useradmin: localStorage.getItem('user_admin') || 'NULL'
+};
+
 // 导入抽屉控制
 const { active, activateDrawer} = (inject('drawer') as Drawer);
-
-// 导入下边抽屉控制
-const { activeBottomDrawer, activateBottomDrawer } = (inject('loginDrawer') as LoginDrawer);
 
 // 可渲染服务
 const serviceOptions: Array<ServiceOption> = [
@@ -34,6 +38,14 @@ const serviceOptions: Array<ServiceOption> = [
         }
     },
 ];
+
+/*
+    退出登录
+*/
+const logout = () => {
+    deleteAccessToken();
+    active.value = false;
+};
 </script>
 
 <template>
@@ -43,8 +55,8 @@ const serviceOptions: Array<ServiceOption> = [
                 <IconUserAvatarLight />
             </NIcon>
             <n-flex vertical :size="0">
-                <h3 style="margin: 0;">Diluc</h3>
-                <span style="color: gray;">管理员</span>
+                <h3 style="margin: 0;">{{ userData.username }}</h3>
+                <span style="color: gray;">{{ userData.useradmin }}</span>
             </n-flex>
         </n-flex>
         <n-flex style="padding-top: 30px; padding-bottom: 30px;">
@@ -53,7 +65,7 @@ const serviceOptions: Array<ServiceOption> = [
             </template>
         </n-flex>
         <n-flex justify="center" align="center" style="position: fixed; bottom: 16px;">
-            <NIcon :size="35" @click="activateBottomDrawer">
+            <NIcon :size="35" @click="logout">
                 <IconLogout />
             </NIcon>
         </n-flex>

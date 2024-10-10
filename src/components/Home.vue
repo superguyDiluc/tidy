@@ -2,11 +2,11 @@
 import { NFlex, NLayout, NLayoutHeader, NScrollbar, NDrawer, NDrawerContent } from 'naive-ui';
 import { ref, provide } from 'vue';
 import TopBar from './utils/TopBar.vue';
-import WorkCard from './utils/WorkCard.vue';
 import type { Ref } from 'vue';
 import type { Drawer, LoginDrawer } from '@/types/components/Home';
 import DrawerContent from './utils/DrawerContent.vue';
 import DrawerLogin from './utils/DrawerLogin.vue';
+import WorkBar from './utils/WorkBar.vue';
 
 // 获取屏幕数据
 const screenWidth: Ref<number> = ref(window.innerWidth * 0.618);
@@ -66,11 +66,14 @@ provide('loginDrawer', {
                         style="padding: 10px;"
                         :size=30
                     >
-                        <WorkCard />
-                        <WorkCard />
-                        <WorkCard />
-                        <WorkCard />
-                        <WorkCard />
+                        <Suspense>
+                            <template #default>
+                                <WorkBar />
+                            </template>
+                            <template #fallback>
+                                Loading...
+                            </template>
+                        </Suspense>
                     </n-flex>
                 </n-scrollbar>
             </n-layout>

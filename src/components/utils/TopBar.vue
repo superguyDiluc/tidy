@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { NFlex, NSwitch, NIcon, darkTheme } from 'naive-ui';
+import { NFlex, NSwitch, NIcon, useMessage } from 'naive-ui';
 import { inject, ref } from 'vue';
 import { useRouter, type Router } from 'vue-router';
 import IconUserAvatarLight from '../icons/IconUserAvatarLight.vue';
 import type { Theme } from '@/types/App';
-import type { Drawer } from '@/types/components/Home';
+import type { Drawer, LoginDrawer } from '@/types/components/Home';
 import IconArrowBack from '../icons/IconArrowBack.vue';
+import { checkLogin } from '@/utils';
 
 // 传入属性
 const props = defineProps({
@@ -18,6 +19,9 @@ const props = defineProps({
         default: false
     }
 });
+
+// 广播
+const message = useMessage();
 
 // 路由
 const router: Router = useRouter();
@@ -32,11 +36,31 @@ if (props.hasDrawer) {
     activateDrawer = (inject('drawer') as Drawer).activateDrawer;
 }
 
+// 获取登录界面接口
+let activateBottomDrawer: (() => void) | undefined = undefined;
+if (props.hasDrawer) {
+    activateBottomDrawer = (inject('loginDrawer') as LoginDrawer).activateBottomDrawer;
+}
+
 /*
     路由回退
 */
 const backHome = () => {
     router.push('/');
+};
+
+/*
+    抽屉事件处理
+*/
+const handleSideDrawer = () => {
+    const loginStatus = checkLogin();
+    if (loginStatus && activateDrawer) {
+        activateDrawer();
+    }
+    else if (activateBottomDrawer) {
+        message.info('Please Login First');
+        activateBottomDrawer();
+    }
 };
 </script>
 
@@ -45,7 +69,7 @@ const backHome = () => {
         justify="space-between" 
         align="center"
     >
-        <n-icon v-if="props.hasDrawer" :size="30" @click="activateDrawer">
+        <n-icon v-if="props.hasDrawer" :size="30" @click="handleSideDrawer">
             <IconUserAvatarLight />
         </n-icon>
         <n-icon v-else :size="30" @click="backHome">
