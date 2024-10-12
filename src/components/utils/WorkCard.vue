@@ -11,6 +11,9 @@ const props = defineProps({
     },
     next_username: {
         type: String
+    },
+    last_completed_time: {
+        type: String
     }
 });
 
@@ -32,7 +35,7 @@ const cardTitle: VNode = h(
         embedded
     >
         <template #header-extra>
-            <h3 style="color: gray">10天前</h3>
+            <h3 style="color: gray">{{ props.last_completed_time }}</h3>
         </template>
         <template #default>
             <n-flex>

@@ -155,6 +155,49 @@ export async function fetchUserName(userID: number) {
 }
 
 /*
+    获取指定日志
+*/
+export async function fetchLogData(maxnum: number, workID?: number, userID?: number) {
+    try {
+        const token = `${localStorage.getItem('token_type')} ${localStorage.getItem('access_token')}`;
+        const params = new URLSearchParams({
+            max_num: maxnum.toString(),
+        });
+
+        if (workID !== undefined) {
+            params.append('work_id', workID.toString());
+        }
+        if (userID !== undefined) {
+            params.append('user_id', userID.toString());
+        }
+
+        const response = await fetch(`/api/log/latest?${params.toString()}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`Error ${response.status}: ${errorData.detail || '无法添加任务'}`);
+        }
+
+        const logData = await response.json();
+        return logData as Array<{
+            log_id: number;
+            user_id: number;
+            work_id: number;
+            log_time: number;
+        }>;
+    }
+    catch (error: any) {
+        console.error(error.message);
+    }
+}
+
+/*
     判断当前是否处于登录状态
 */
 export function checkLogin() {
@@ -172,4 +215,20 @@ export function checkLogin() {
 export function deleteAccessToken() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('token_type');
+}
+
+/*
+    计算毫秒级时间戳与当前时间的可视化差值
+*/
+export function calculateTimeDifference(timeStamp: number) {
+    const date = new Date(timeStamp * 1000);
+    const now = new Date();
+    const timeDifferenceInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    const days = Math.floor(timeDifferenceInSeconds / 86400);
+    const hours = Math.floor((timeDifferenceInSeconds % 86400) / 3600);
+    const minutes = Math.floor((timeDifferenceInSeconds % 3600) / 60);
+    const seconds = timeDifferenceInSeconds % 60;
+
+    return { days, hours, minutes, seconds };
 }
