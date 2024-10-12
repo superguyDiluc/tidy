@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NFlex, NLayout, NLayoutHeader, NScrollbar, NDrawer, NDrawerContent } from 'naive-ui';
-import { ref, provide } from 'vue';
+import { ref, provide, useTemplateRef } from 'vue';
 import TopBar from './utils/TopBar.vue';
 import type { Ref } from 'vue';
 import type { Drawer, LoginDrawer } from '@/types/components/Home';
@@ -41,6 +41,10 @@ provide('loginDrawer', {
     activeBottomDrawer,
     activateBottomDrawer
 } as LoginDrawer);
+
+// 更新任务栏
+const updateWorkBar = ref(0);
+provide('updateWorkBar', updateWorkBar);
 </script>
 
 <template>
@@ -68,7 +72,7 @@ provide('loginDrawer', {
                     >
                         <Suspense>
                             <template #default>
-                                <WorkBar />
+                                <WorkBar :key="updateWorkBar"/>
                             </template>
                             <template #fallback>
                                 Loading...

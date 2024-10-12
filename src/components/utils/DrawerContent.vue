@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { NFlex, NIcon } from 'naive-ui';
 import { useRouter, type Router } from 'vue-router';
-import { inject } from 'vue';
+import { inject, type Ref } from 'vue';
 import IconUserAvatarLight from '../icons/IconUserAvatarLight.vue';
 import IconLogout from '../icons/IconLogout.vue';
 import CommonCard from './CommonCard.vue';
-import type { Drawer, LoginDrawer } from '@/types/components/Home';
+import type { Drawer } from '@/types/components/Home';
 import type { ServiceOption } from '@/types/components/utils/DrawerContent';
 import { deleteAccessToken } from '@/utils';
 
@@ -20,6 +20,8 @@ const userData = {
 
 // 导入抽屉控制
 const { active, activateDrawer} = (inject('drawer') as Drawer);
+// 导入更新任务栏
+const updateWorkBar = inject('updateWorkBar') as Ref<number>;
 
 // 可渲染服务
 const serviceOptions: Array<ServiceOption> = [
@@ -44,8 +46,10 @@ const serviceOptions: Array<ServiceOption> = [
 */
 const logout = () => {
     deleteAccessToken();
+    updateWorkBar.value++;
     active.value = false;
 };
+
 </script>
 
 <template>

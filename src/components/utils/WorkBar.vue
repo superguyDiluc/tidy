@@ -48,7 +48,7 @@ processedWorkData.value = await Promise.all(workData.map(async (work) => {
 <template>
     <WorkCard 
         v-for="item in processedWorkData" 
-        :workname="item.work_name"
+        :workname="item.work_name" 
         :cur_username="item.cur_username"
         :next_username="item.next_username"
         :last_completed_time="item.last_completed_time"/>

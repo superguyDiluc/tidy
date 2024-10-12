@@ -2,7 +2,7 @@
 import type { LoginDrawer } from '@/types/components/Home';
 import { deleteAccessToken, UpdateAccessToken, updateUserData } from '@/utils';
 import { NFlex, NForm, NFormItem, NInput, NButton, useMessage, NMessageProvider, type FormInst } from 'naive-ui';
-import { ref, inject } from 'vue';
+import { ref, inject, type Ref } from 'vue';
 
 interface ModelType {
     username: string | null;
@@ -34,6 +34,8 @@ const rules = {
         trigger: ['input']
     }
 }
+
+const updateWorkBar = inject('updateWorkBar') as Ref<number>;
 const handleValidateClick = (e: MouseEvent): void => {
     e.preventDefault()
     formRef.value?.validate(async (errors) => {
@@ -42,6 +44,7 @@ const handleValidateClick = (e: MouseEvent): void => {
             if (updateStatus) {
                 updateStatus = await updateUserData();
                 if (updateStatus) {
+                    updateWorkBar.value++;
                     message.success('Login Success');
                     activeBottomDrawer.value = false;
                 }
