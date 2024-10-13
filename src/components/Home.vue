@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { NFlex, NLayout, NLayoutHeader, NScrollbar, NDrawer, NDrawerContent } from 'naive-ui';
-import { ref, provide, useTemplateRef } from 'vue';
+import { NFlex, NLayout, NLayoutHeader, NScrollbar, NDrawer, NDrawerContent, NIcon } from 'naive-ui';
+import { ref, provide } from 'vue';
 import TopBar from './utils/TopBar.vue';
 import type { Ref } from 'vue';
 import type { Drawer, LoginDrawer } from '@/types/components/Home';
 import DrawerContent from './utils/DrawerContent.vue';
 import DrawerLogin from './utils/DrawerLogin.vue';
 import WorkBar from './utils/WorkBar.vue';
+import IconLoading from './icons/IconLoading.vue';
 
 // 获取屏幕数据
 const screenWidth: Ref<number> = ref(window.innerWidth * 0.618);
@@ -69,13 +70,16 @@ provide('updateWorkBar', updateWorkBar);
                     <n-flex
                         style="padding: 10px;"
                         :size=30
+                        justify="center"
                     >
-                        <Suspense>
+                        <Suspense timeout="500">
                             <template #default>
                                 <WorkBar :key="updateWorkBar"/>
                             </template>
                             <template #fallback>
-                                Loading...
+                                <n-icon :size="60" style="top: 250px;">
+                                    <IconLoading />
+                                </n-icon>
                             </template>
                         </Suspense>
                     </n-flex>

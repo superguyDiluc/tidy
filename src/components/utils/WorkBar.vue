@@ -17,11 +17,21 @@ const processedWorkData: Ref<Array<ProcessedWorkData>> = ref([]);
 // 原任务卡片数据
 const workData = await fetchAllWork() || [];
 
+// 模拟异步
+async function testDelay(x: any) {
+    return new Promise(resolve => {
+        setTimeout(() => { resolve(x); }, x);
+    });
+}
+
 // 异步获取处理后数据
 processedWorkData.value = await Promise.all(workData.map(async (work) => {
     const workStat = await fetchWorkStat(work.work_id, 2) || [];
     const logData = await fetchLogData(1, undefined, 1) || [];
     let lastCompletedTime = 'null';
+
+    // await testDelay(500);
+
     if (logData[0]) {
         const { days, hours, minutes, seconds } = calculateTimeDifference(logData[0].log_time);
         if (days) {
