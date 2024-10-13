@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NFlex, NSwitch, NIcon, useMessage } from 'naive-ui';
-import { inject, ref } from 'vue';
+import { inject, ref, watch } from 'vue';
 import { useRouter, type Router } from 'vue-router';
 import IconUserAvatarLight from '../icons/IconUserAvatarLight.vue';
 import type { Theme } from '@/types/App';
@@ -28,7 +28,10 @@ const router: Router = useRouter();
 
 // 导入主题设置
 const { theme, handleSetTheme } = inject('theme') as Theme;
-const themeSwitch = ref(typeof theme.value !== 'undefined');
+const themeSwitch = ref(theme.value !== undefined);
+watch(theme, () => {
+    themeSwitch.value = theme.value !== undefined;
+});
 
 // 导入侧边抽屉设置
 let activateDrawer: (() => void) | undefined = undefined;
