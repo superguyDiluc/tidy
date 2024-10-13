@@ -157,7 +157,7 @@ export async function fetchUserName(userID: number) {
 /*
     获取指定日志
 */
-export async function fetchLogData(maxnum: number, workID?: number, userID?: number) {
+export async function fetchLogData(maxnum: number, userID?: number, workID?: number) {
     try {
         const token = `${localStorage.getItem('token_type')} ${localStorage.getItem('access_token')}`;
         const params = new URLSearchParams({
@@ -185,6 +185,7 @@ export async function fetchLogData(maxnum: number, workID?: number, userID?: num
         }
 
         const logData = await response.json();
+        console.log(logData);
         return logData as Array<{
             log_id: number;
             user_id: number;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NFlex, NCard, NButton, useMessage, NModal, NIcon } from 'naive-ui';
-import { ref, h, type VNode, type Ref, nextTick } from 'vue';
+import { ref, h, watchEffect, type VNode, type Ref, nextTick } from 'vue';
 import { fetchLogData, fetchUserName, fetchWorkStat, calculateTimeDifference, postLog, testDelay } from '@/utils';
 import IconWarning from '../icons/IconWarning.vue';
 
@@ -29,7 +29,7 @@ const processedWorkData: Ref<ProcessedWorkData | undefined> = ref();
 // 获取处理数据
 async function getProcessedWorkData() {
     const workStat = await fetchWorkStat(props.work_id, 2) || [];
-    const logData = await fetchLogData(1, undefined, 1) || [];
+    const logData = await fetchLogData(1, undefined, props.work_id) || [];
     let lastCompletedTime = 'null';
 
     // await testDelay(500);
@@ -62,14 +62,17 @@ async function getProcessedWorkData() {
 // 异步获取处理后数据
 processedWorkData.value = await getProcessedWorkData();
 
-const cardTitle: VNode = h(
-    'div',
-    [
-        h('h2', processedWorkData.value?.work_name || 'null'),
-        h('h4', processedWorkData.value?.cur_username || 'null'),
-        h('h5', { style: 'color: gray;' }, `下一位是: ${processedWorkData.value?.next_username || 'null'}`)
-    ]
-);
+const cardTitle = ref<VNode | null>(null)
+watchEffect(() => {
+    cardTitle.value = h(
+        'div',
+        [
+            h('h2', processedWorkData.value?.work_name || 'null'),
+            h('h4', processedWorkData.value?.cur_username || 'null'),
+            h('h5', { style: 'color: gray;' }, `下一位是: ${processedWorkData.value?.next_username || 'null'}`)
+        ]
+    );
+});
 
 // 处理提交事件
 const isSubmitting = ref(false);
