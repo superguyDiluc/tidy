@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { LoginDrawer } from '@/types/components/Home';
-import { deleteAccessToken, UpdateAccessToken, updateUserData } from '@/utils';
+import { deleteAccessToken, updateAccessToken, updateUserData } from '@/utils';
 import { NFlex, NForm, NFormItem, NInput, NButton, useMessage, NMessageProvider, type FormInst } from 'naive-ui';
 import { ref, inject, type Ref } from 'vue';
 
@@ -40,7 +40,7 @@ const handleValidateClick = (e: MouseEvent): void => {
     e.preventDefault()
     formRef.value?.validate(async (errors) => {
         if (!errors) {
-            let updateStatus = await UpdateAccessToken(modelRef.value.username as string, modelRef.value.password as string);
+            let updateStatus = await updateAccessToken(modelRef.value.username as string, modelRef.value.password as string);
             if (updateStatus) {
                 updateStatus = await updateUserData();
                 if (updateStatus) {

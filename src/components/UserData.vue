@@ -12,6 +12,10 @@ const serviceOptions = [
     {
         tag: '修改头像',
         event: undefined
+    },
+    {
+        tag: '修改密码',
+        event: undefined
     }
 ];
 </script>
@@ -35,7 +39,7 @@ const serviceOptions = [
                         style="padding: 10px;"
                         :size=30
                     >
-                        <CommonCard v-for="option in serviceOptions" :tag="option.tag" @click="option.event"/>
+                        <CommonCard v-for="option in serviceOptions" :key="option.tag" :tag="option.tag" @click="option.event"/>
                     </n-flex>
                 </n-scrollbar>
             </n-layout>

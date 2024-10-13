@@ -3,7 +3,7 @@
     @params username: string, password: string
     @return Promise<boolean>
 */
-export async function UpdateAccessToken (username: string, password: string): Promise<boolean> {
+export async function updateAccessToken (username: string, password: string): Promise<boolean> {
     try {
         const formData = new FormData();
         formData.append('username', username);
@@ -198,6 +198,36 @@ export async function fetchLogData(maxnum: number, workID?: number, userID?: num
 }
 
 /*
+    提交日志
+*/
+export async function postLog(workID: number) {
+    try {
+        const token = `${localStorage.getItem('token_type')} ${localStorage.getItem('access_token')}`;
+        const response = await fetch('/api/log/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+            body: JSON.stringify({
+                work_id: workID
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`Error ${response.status}: ${errorData.detail || '无法添加任务'}`);
+        }
+
+        const result = await response.json();
+        return true;
+    }
+    catch (error: any) {
+        console.error(error.message);
+    }
+}
+
+/*
     判断当前是否处于登录状态
 */
 export function checkLogin() {
@@ -231,4 +261,11 @@ export function calculateTimeDifference(timeStamp: number) {
     const seconds = timeDifferenceInSeconds % 60;
 
     return { days, hours, minutes, seconds };
+}
+
+// 模拟异步
+export async function testDelay(x: any) {
+    return new Promise(resolve => {
+        setTimeout(() => { resolve(x); }, x);
+    });
 }
