@@ -6,21 +6,27 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: HomeView,
-      meta: {
-        requiresAuth: false
-      }
-    },
-    {
-      path: '/userdata',
-      name: 'userdata',
-      component: () => import('../views/UserDataView.vue'),
-      meta: {
-        requiresAuth: true
-      }
-    },
+      path: '/tidy/',
+      name: 'tidy',
+      children: [
+        {
+          path: '',
+          name: 'home',
+          component: HomeView,
+          meta: {
+            requiresAuth: false
+          }
+        },
+        {
+          path: 'userdata',
+          name: 'userdata',
+          component: () => import('../views/UserDataView.vue'),
+          meta: {
+            requiresAuth: true
+          }
+        },
+      ]
+    }
     // {
     //   path: '/login',
     //   name: 'login',
