@@ -32,8 +32,6 @@ async function getProcessedWorkData() {
     const logData = await fetchLogData(1, undefined, props.work_id) || [];
     let lastCompletedTime = 'null';
 
-    // await testDelay(500);
-
     if (logData[0]) {
         const { days, hours, minutes, seconds } = calculateTimeDifference(logData[0].log_time);
         if (days) {
@@ -83,6 +81,11 @@ const handleCheckUserID = (e: MouseEvent) => {
 
     // 查看当前任务是否为该用户的
     const user_id = localStorage.getItem('user_id');
+    console.log(user_id);
+    if (user_id === null) {
+        message.info('Please Login First!');
+        return;
+    }
     if (user_id !== processedWorkData.value?.cur_user_id) {
         showCheckModal.value = true;
     }

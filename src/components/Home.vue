@@ -94,7 +94,7 @@ provide('updateWorkBar', updateWorkBar);
             :trap-focus="false"
         >
             <n-drawer-content 
-                title="Diluc, 您好"
+                title="您好"
                 closable
             >
                 <DrawerContent />

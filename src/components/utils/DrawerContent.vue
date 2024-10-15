@@ -46,6 +46,11 @@ const serviceOptions: Array<ServiceOption> = [
 */
 const logout = () => {
     deleteAccessToken();
+    localStorage.removeItem('user_name');
+    localStorage.removeItem('real_name');
+    localStorage.removeItem('user_admin');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('user_photo_url');
     updateWorkBar.value++;
     active.value = false;
 };
