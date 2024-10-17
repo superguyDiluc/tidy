@@ -9,7 +9,7 @@ interface ProcessedWorkData {
     cur_username: string;
     next_username: string; 
     last_completed_time: string;
-    cur_user_id: String;
+    cur_user_id: string;
 };
 
 const props = defineProps({
@@ -115,7 +115,8 @@ const isNotifying = ref(false);
 const handleNotify = async () => {
     isNotifying.value = true;
     if (processedWorkData.value) {
-        const status = await postXiaoAiNotify(processedWorkData.value.cur_username, props.work_name);
+        const cur_realname = await fetchUserName(parseInt(processedWorkData.value.cur_user_id));
+        const status = await postXiaoAiNotify(cur_realname || 'NULL', props.work_name);
         if (status) {
             message.success('通知成功');
         }
