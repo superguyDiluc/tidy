@@ -6,11 +6,11 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: '/tidy/',
+      path: '/tidy',
       name: 'tidy',
       children: [
         {
-          path: '',
+          path: '/tidy/',
           name: 'home',
           component: HomeView,
           meta: {
@@ -18,7 +18,7 @@ const router = createRouter({
           }
         },
         {
-          path: 'userdata',
+          path: '/tidy/userdata',
           name: 'userdata',
           component: () => import('../views/UserDataView.vue'),
           meta: {

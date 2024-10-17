@@ -49,7 +49,7 @@ if (props.hasDrawer) {
     路由回退
 */
 const backHome = () => {
-    router.push('/');
+    router.push('/tidy');
 };
 
 /*
