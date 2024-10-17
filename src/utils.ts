@@ -155,6 +155,33 @@ export async function fetchUserName(userID: number) {
 }
 
 /*
+    获取用户的真名
+*/
+export async function fetchUserRealName(userID: number) {
+    try {
+        const token = `${localStorage.getItem('token_type')} ${localStorage.getItem('access_token')}`;
+        const response = await fetch(`/api/user/${userID}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`Error ${response.status}: ${errorData.detail}`);
+        }
+
+        const userData = await response.json();
+        return userData.real_name as string;
+    }
+    catch (error: any){
+        console.error(error.message);
+    }
+}
+
+/*
     获取指定日志
 */
 export async function fetchLogData(maxnum: number, userID?: number, workID?: number) {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { NFlex, NCard, NButton, useMessage, NModal, NIcon } from 'naive-ui';
 import { ref, h, watchEffect, type VNode, type Ref, nextTick } from 'vue';
-import { fetchLogData, fetchUserName, fetchWorkStat, calculateTimeDifference, postLog, testDelay, postXiaoAiNotify } from '@/utils';
+import { fetchLogData, fetchUserName, fetchWorkStat, calculateTimeDifference, postLog, postXiaoAiNotify, fetchUserRealName } from '@/utils';
 import IconWarning from '../icons/IconWarning.vue';
 
 interface ProcessedWorkData {
@@ -115,7 +115,7 @@ const isNotifying = ref(false);
 const handleNotify = async () => {
     isNotifying.value = true;
     if (processedWorkData.value) {
-        const cur_realname = await fetchUserName(parseInt(processedWorkData.value.cur_user_id));
+        const cur_realname = await fetchUserRealName(parseInt(processedWorkData.value.cur_user_id));
         const status = await postXiaoAiNotify(cur_realname || 'NULL', props.work_name);
         if (status) {
             message.success('通知成功');
