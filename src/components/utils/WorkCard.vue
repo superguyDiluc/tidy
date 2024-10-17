@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { NFlex, NCard, NButton, useMessage, NModal, NIcon } from 'naive-ui';
 import { ref, h, watchEffect, type VNode, type Ref, nextTick } from 'vue';
-import { fetchLogData, fetchUserName, fetchWorkStat, calculateTimeDifference, postLog, testDelay } from '@/utils';
+import { fetchLogData, fetchUserName, fetchWorkStat, calculateTimeDifference, postLog, testDelay, postXiaoAiNotify } from '@/utils';
 import IconWarning from '../icons/IconWarning.vue';
 
 interface ProcessedWorkData {
@@ -93,6 +93,7 @@ const handleCheckUserID = (e: MouseEvent) => {
         handleSubmitWork();
     }
 }
+// 处理提交任务
 const handleSubmitWork = async () => {
     isSubmitting.value = true;
 
@@ -108,6 +109,21 @@ const handleSubmitWork = async () => {
     }
 
     isSubmitting.value = false;
+};
+// 处理通知
+const isNotifying = ref(false);
+const handleNotify = async () => {
+    isNotifying.value = true;
+    if (processedWorkData.value) {
+        const status = await postXiaoAiNotify(processedWorkData.value.cur_username, props.work_name);
+        if (status) {
+            message.success('通知成功');
+        }
+        else {
+            message.error('通知失败');
+        }
+    }
+    isNotifying.value = false;
 };
 </script>
 
@@ -140,7 +156,9 @@ const handleSubmitWork = async () => {
                         </n-icon>
                     </template>
                 </n-modal>
-                <n-button>
+                <n-button
+                    :loading="isNotifying" 
+                    @click="handleNotify">
                     通知
                 </n-button>
             </n-flex>

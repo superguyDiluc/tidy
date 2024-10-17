@@ -229,6 +229,33 @@ export async function postLog(workID: number) {
 }
 
 /*
+    向小爱发起通知请求
+*/
+export async function postXiaoAiNotify(realname: string, workname: string) {
+    try {
+        const token = `${localStorage.getItem('token_type')} ${localStorage.getItem('access_token')}`;
+        const response = await fetch('/api/mi/speak', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+            body: JSON.stringify({
+                "mi_text": `${realname}，到你${workname}啦！${realname}，到你${workname}啦！${realname}，到你${workname}啦！`
+            })
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`Error ${response.status}: ${errorData.detail}`);
+        }
+        return true;
+    }
+    catch (error: any){
+        console.error(error.message);
+    }
+}
+
+/*
     判断当前是否处于登录状态
 */
 export function checkLogin() {
